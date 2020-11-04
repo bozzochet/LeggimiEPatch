@@ -1,0 +1,72 @@
+Ho fatto il checkout come:
+
+   $> git clone http://root.cern.ch/git/root.git root-v5-34
+   $> cd root-v5-34
+   $> git checkout -b v5-34-25 v5-34-25
+   $> git checkout #perche ho deciso che invece volevo la HEAD
+
+L'ho patchato:
+
+   $> patch -p1 < patch_new.txt
+
+C'erano dei conflitti in TSVG.cxx. Loi ho risolti a mano e ho creato la nuova patch con:
+
+   $> git diff > patch_new_21March2015.txt
+
+---------------------------------
+
+Ho aggiornato con
+
+   $> git pull
+
+Controllo quali tag esistono con
+
+   $> git tag -l
+
+e faccio il checkout della tag scelta con
+
+   $> git checkout -b v5-34-36 v5-34-36
+
+ma lui mi informa che le modifiche (quelle della patch) andrebbero perse e quindi devo committare (ho provato e poi succede un casino da cui non so uscire) o 'stashed".
+Questo 'stash' praticamente consiste nel salvare le modifiche che c'erano e riportarsi alla versione senza modifiche (HEAD?!). Quindi:
+
+   $> git stash
+
+ha fatto questo stash. Con
+
+   $> git stash list
+   stash@{0}: WIP on v5-34-25: 7f61de2 Update ROOT version files to v5.34/25.
+
+mostra la lista di questi 'stash'. Con
+
+  $> git stash show
+  graf2d/postscript/src/TImageDump.cxx  | 49 +++++++++++++++++++++++++++++--------------------
+  graf2d/postscript/src/TPDF.cxx        | 16 ++++++++++++++--
+  graf2d/postscript/src/TPostScript.cxx | 16 ++++++++++++++--
+  graf2d/postscript/src/TSVG.cxx        | 22 ++++++++++++++++++----
+  graf2d/quartz/src/QuartzMarker.mm     | 10 ++++++++++
+  graf2d/x11/src/TGX11.cxx              | 10 ++++++++++
+  6 files changed, 95 insertions(+), 28 deletions(-)
+
+mostra come e' fatto lo stash. Con
+
+  $> git stash show -p
+
+praticamente crea il formato utile per la patch.
+Comunque ora si puo' fare:
+
+  $> git checkout -b v5-34-36 v5-34-36
+  Switched to a new branch 'v5-34-36'
+
+Per vedere se ho capito ho fatto:
+
+  $> git stash show -p > patch_new_new.txt
+
+cioe' ho creato una patch partendo da questo stash. In teoria deve essere uguale alla patch originale che aveva creato quelle modifiche:
+
+  $> diff patch_new_new.txt patch_new_21March2015.txt 
+
+e infatti sono identiche.
+A questo punto lo ri-patcho e sono pronto per compilarlo:
+
+  $> patch -p1 < patch_new_21March2015.txt 

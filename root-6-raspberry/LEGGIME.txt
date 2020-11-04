@@ -1,0 +1,9 @@
+Ho "semplicemente" fatto:
+
+cmake -DCMAKE_SHARED_LINKER_FLAGS='-latomic' -DCMAKE_INSTALL_PREFIX=../root-6.22.00_install -DCMAKE_CXX_STANDARD=17 ../root
+
+dove però è necessario
+
+-DCMAKE_SHARED_LINKER_FLAGS='-latomic'
+
+perchè altrimenti non compila libRIO (cfr. https://root-forum.cern.ch/t/root-6-18-04-fails-to-compile-on-raspbian-10-with-solution/36514)

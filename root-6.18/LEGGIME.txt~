@@ -1,0 +1,21 @@
+mkdir ../root-6.18.00_build
+cd ../root-6.18.00_build
+
+cmake  -DCMAKE_CXX_STANDARD="14" -Dasimage="ON" -Dastiff="ON" -Dbuiltin_afterimage="ON" -Dbuiltin_clang="ON" -Dbuiltin_davix="ON" -Dbuiltin_freetype="ON" -Dbuiltin_ftgl="ON" -Dbuiltin_gl2ps="ON" -Dbuiltin_glew="ON" -Dbuiltin_llvm="ON" -Dbuiltin_openssl="ON" -Dbuiltin_tbb="ON" -Dbuiltin_unuran="ON" -Dbuiltin_vdt="ON" -Dbuiltin_xxhash="ON" -Dcling="ON" -Dcocoa="ON" -Ddavix="ON" -Dexceptions="ON" -Dexplicitlink="ON" -Dfftw3="ON" -Dfitsio="ON" -Dgdml="ON" -Dgenvector="ON" -Dhttp="ON" -Dimt="ON" -Dlibcxx="ON" -Dmathmore="ON" -Dmysql="ON" -Dopengl="ON" -Dpch="ON" -Dpython="ON" -Droofit="ON" -Dshared="ON" -Dsoversion="ON" -Dsqlite="ON" -Dssl="ON" -Dthread="ON" -Dtmva="ON" -Dtmva-cpu="ON" -Dvdt="ON" -Dxml="ON" -Dxrootd="ON" -Dfortran=ON ../root-6.18.00
+
+(invece se lo force single-thread non compila:
+
+cmake  -DCMAKE_CXX_STANDARD="14" -Dasimage="ON" -Dastiff="ON" -Dbuiltin_afterimage="ON" -Dbuiltin_clang="ON" -Dbuiltin_davix="ON" -Dbuiltin_freetype="ON" -Dbuiltin_ftgl="ON" -Dbuiltin_gl2ps="ON" -Dbuiltin_glew="ON" -Dbuiltin_llvm="ON" -Dbuiltin_openssl="ON" -Dbuiltin_tbb="ON" -Dbuiltin_unuran="ON" -Dbuiltin_vdt="ON" -Dbuiltin_xxhash="ON" -Dcling="ON" -Dcocoa="ON" -Ddavix="ON" -Dexceptions="ON" -Dexplicitlink="ON" -Dfftw3="ON" -Dfitsio="ON" -Dgdml="ON" -Dgenvector="ON" -Dhttp="ON" -Dimt="OFF" -Dmt="OFF" -Dlibcxx="ON" -Dmathmore="ON" -Dmysql="ON" -Dopengl="ON" -Dpch="ON" -Dpython="ON" -Droofit="ON" -Dshared="ON" -Dsoversion="ON" -Dsqlite="ON" -Dssl="ON" -Dthread="ON" -Dtmva="ON" -Dtmva-cpu="ON" -Dvdt="ON" -Dxml="ON" -Dxrootd="ON" -Dfortran=ON ../root-6.18.00
+
+)
+
+sostituito con:
+
+cmake  -DCMAKE_CXX_STANDARD="14" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dfortran=ON ../root-6.18.00
+
+make -j8
+
+mkdir ../root-6.18.00_install
+
+#better to use absolute path otherwise "../" is wrt the real build dir, and NOT wrt to a possibile used symlink
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.18.00_install -P cmake_install.cmake

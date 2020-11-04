@@ -1,0 +1,16 @@
+Configurato con:
+
+cmake -DVGM_DIR=/amssw/duranti/vgm_install/lib/VGM-4.5.0 -DCMAKE_INSTALL_PREFIX=/amssw/duranti/GGSSoftware_install/ /amssw/duranti/GGSSoftware
+
+per avere anche VGM
+
+(ma in realta' aggiungengo VGM nel PATH e nel LD_LIBRARY_PATH basta
+
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/GGSSoftware_install/ /amssw/duranti/GGSSoftware
+
+che VGM lo trova da solo)
+
+e poi
+
+make
+make install
