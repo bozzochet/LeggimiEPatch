@@ -1,18 +1,24 @@
 cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/geant4.10.06-install -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=OFF  -DGEANT4_INSTALL_DATA=ON -DGEANT4_INSTALL_DATADIR=/amssw/duranti/geant4-share -DGEANT4_BUILD_CXXSTD=14 ../geant4.10.06.p02
 
-e poi, ovviamente,
+e poi, ovviamente:
 
 make -j8
 make install
 
-A Mar 2021 ho avuto problemi con GGS e DTP e ho re-installato le qt e quindi ricompilato con
+A Mar 2021 ho avuto problemi con GGS e DTP e ho re-installato le qt e quindi ricompilato con:
 
 cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/geant4.10.06-install -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=OFF  -DGEANT4_INSTALL_DATA=ON -DGEANT4_INSTALL_DATADIR=/amssw/duranti/geant4-share -DGEANT4_BUILD_CXXSTD=14 -DGEANT4_USE_QT=ON ../geant4.10.06.p02
 
-Sempre a Mar 2021 ho ricompilato ancora per provare GGST-mt
+Sempre a Mar 2021 ho ricompilato ancora per provare GGST-mt:
 
 cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/geant4.10.06-install -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=ON  -DGEANT4_INSTALL_DATA=ON -DGEANT4_INSTALL_DATADIR=/amssw/duranti/geant4-share -DGEANT4_BUILD_CXXSTD=14 -DGEANT4_USE_QT=ON ../geant4.10.06.p02
 
-Una volta passato a Catalina e (oltre a un'infinità di magheggi, scritti in uno scambio di mail con Mori, Formato e Vagelli del 21 Marzo 2021) ho dovuto ricompilare passando per esplicito dove è OpenGL
+Una volta passato a Catalina e (oltre a un'infinità di magheggi, scritti in uno scambio di mail con Mori, Formato e Vagelli del 21 Marzo 2021) ho dovuto ricompilare passando per esplicito dove è OpenGL:
 
 cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/geant4.10.06-install -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=ON  -DGEANT4_INSTALL_DATA=ON -DGEANT4_INSTALL_DATADIR=/amssw/duranti/geant4-share -DGEANT4_BUILD_CXXSTD=14 -DGEANT4_USE_QT=ON -DOPENGL_INCLUDE_DIR=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenGL.framework/Versions/A ../geant4.10.06.p02
+
+Una volta capito che il problema è che con Catalina (anzi credo che sia XCode 12.4 il problema, che però prima di Catalina non si può mettere) credo (purtroppo non sono certo al 100%) di aver riconfigurato com:
+
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/geant4.10.06-install -DGEANT4_USE_GDML=ON -DGEANT4_BUILD_MULTITHREADED=ON  -DGEANT4_INSTALL_DATA=ON -DGEANT4_INSTALL_DATADIR=/amssw/duranti/geant4-share -DGEANT4_BUILD_CXXSTD=17 -DGEANT4_USE_QT=ON ../geant4.10.06.p02
+
+(cioè SENZA passare il path di OpenGL e CON sdd=17 [come root])
