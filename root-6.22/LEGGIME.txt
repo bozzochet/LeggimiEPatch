@@ -1,0 +1,49 @@
+(la patch che applicavo con
+
+patch -p1 < ../LeggimiEPatch/root-6.22/root_6.patch
+
+da dentro
+
+root-6.22.08 da un sacco di errori:
+
+bozzo@host-10-26-1-27:root-6.22.08> patch -p1 < /amssw/duranti/LeggimiEPatch/root-6.22/root_6.patch
+patching file graf2d/postscript/src/TImageDump.cxx
+Hunk #1 succeeded at 328 with fuzz 2 (offset 7 lines).
+Hunk #2 FAILED at 356.
+Hunk #3 FAILED at 392.
+2 out of 3 hunks FAILED -- saving rejects to file graf2d/postscript/src/TImageDump.cxx.rej
+patching file graf2d/postscript/src/TPDF.cxx
+Hunk #1 FAILED at 583.
+Hunk #2 FAILED at 900.
+2 out of 2 hunks FAILED -- saving rejects to file graf2d/postscript/src/TPDF.cxx.rej
+patching file graf2d/postscript/src/TPostScript.cxx
+Hunk #1 FAILED at 1100.
+1 out of 1 hunk FAILED -- saving rejects to file graf2d/postscript/src/TPostScript.cxx.rej
+patching file graf2d/postscript/src/TSVG.cxx
+Hunk #1 succeeded at 610 with fuzz 1 (offset 19 lines).
+Hunk #2 FAILED at 623.
+Hunk #3 FAILED at 631.
+2 out of 3 hunks FAILED -- saving rejects to file graf2d/postscript/src/TSVG.cxx.rej
+patching file graf2d/quartz/src/QuartzMarker.mm
+patching file graf2d/x11/src/TGX11.cxx
+Hunk #1 succeeded at 674 (offset 4 lines).
+
+)
+
+(NON ho fatto come suggerito in
+
+https://root-forum.cern.ch/t/problems-while-exiting-root-q-with-canvas-2/37119/14
+
+tolgo
+
+.rootlogon.C
+.root_hist
+
+e tolgo il thisroot.sh nel .bashrc)
+
+mkdir ../root-6.22.08_build
+cd ../root-6.22.08_build
+
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.22.08_install -DCMAKE_CXX_STANDARD="17" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dfortran=ON -Dbuiltin_glew=ON ../root-6.22.08
+
+make -j8
