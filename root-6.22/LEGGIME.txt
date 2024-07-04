@@ -28,22 +28,13 @@ patching file graf2d/quartz/src/QuartzMarker.mm
 patching file graf2d/x11/src/TGX11.cxx
 Hunk #1 succeeded at 674 (offset 4 lines).
 
-)
-
-(NON ho fatto come suggerito in
-
-https://root-forum.cern.ch/t/problems-while-exiting-root-q-with-canvas-2/37119/14
-
-tolgo
-
-.rootlogon.C
-.root_hist
-
-e tolgo il thisroot.sh nel .bashrc)
+quindi non è applicata)
 
 mkdir ../root-6.22.08_build
 cd ../root-6.22.08_build
 
-cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.22.08_install -DCMAKE_CXX_STANDARD="17" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dfortran=ON -Dbuiltin_glew=ON ../root-6.22.08
+# cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.22.08_install -DCMAKE_CXX_STANDARD="14" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dfortran=ON -Dbuiltin_glew=ON ../root-6.22.08
+# su M1 l'ho rifatto senza fortran... 
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.22.08_install -DCMAKE_CXX_STANDARD="14" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dbuiltin_glew=ON ../root-6.22.08
 
 make -j8

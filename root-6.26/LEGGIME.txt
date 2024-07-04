@@ -28,23 +28,11 @@ patching file graf2d/quartz/src/QuartzMarker.mm
 patching file graf2d/x11/src/TGX11.cxx
 Hunk #1 succeeded at 674 (offset 4 lines).
 
-)
+quindi non l'ho fatto)
 
-(NON ho fatto come suggerito in
+mkdir ../root-6.26.06_build
+cd ../root-6.26.06_build
 
-https://root-forum.cern.ch/t/problems-while-exiting-root-q-with-canvas-2/37119/14
-
-tolgo
-
-.rootlogon.C
-.root_hist
-
-e tolgo il thisroot.sh nel .bashrc)
-
-mkdir ../root-6.26.04_build
-cd ../root-6.26.04_build
-
-cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.22.08_install -DCMAKE_CXX_STANDARD="17" -Dgdml="ON" -Dhttp="ON" -Dlibcxx="ON" -Droofit="ON" -Dfortran=ON -Dbuiltin_glew=ON ../root-6.22.08
-(ma gfotran in realta' non e' stato trovato)
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.26.06_install -DCMAKE_CXX_STANDARD="17" -Dgdml="ON" -Droofit="ON" -Dbuiltin_glew=ON -Droot7=OFF ../root-6.26.06
 
 make -j8

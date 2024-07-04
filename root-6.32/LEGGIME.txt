@@ -1,0 +1,62 @@
+(la patch che applicavo con
+
+patch -p1 < ../LeggimiEPatch/root-6.32/root_6.patch
+
+da dentro
+
+root-6.32.02 da un sacco di errori:
+
+bozzo@h:root-6.32.02> patch -p1 < /amssw/duranti/LeggimiEPatch/root-6.32/root_6.patch
+patching file graf2d/postscript/src/TImageDump.cxx
+Hunk #1 succeeded at 328 with fuzz 2 (offset 7 lines).
+Hunk #2 FAILED at 356.
+Hunk #3 FAILED at 392.
+2 out of 3 hunks FAILED -- saving rejects to file graf2d/postscript/src/TImageDump.cxx.rej
+patching file graf2d/postscript/src/TPDF.cxx
+Hunk #1 FAILED at 583.
+Hunk #2 FAILED at 900.
+2 out of 2 hunks FAILED -- saving rejects to file graf2d/postscript/src/TPDF.cxx.rej
+patching file graf2d/postscript/src/TPostScript.cxx
+Hunk #1 FAILED at 1100.
+1 out of 1 hunk FAILED -- saving rejects to file graf2d/postscript/src/TPostScript.cxx.rej
+patching file graf2d/postscript/src/TSVG.cxx
+Hunk #1 succeeded at 610 with fuzz 1 (offset 19 lines).
+Hunk #2 FAILED at 623.
+Hunk #3 FAILED at 631.
+2 out of 3 hunks FAILED -- saving rejects to file graf2d/postscript/src/TSVG.cxx.rej
+patching file graf2d/quartz/src/QuartzMarker.mm
+patching file graf2d/x11/src/TGX11.cxx
+Hunk #1 succeeded at 674 (offset 4 lines).
+
+quindi non l'ho fatto)
+
+mkdir ../root-6.32.02_build
+cd ../root-6.32.02_build
+
+cmake -DCMAKE_INSTALL_PREFIX=/amssw/duranti/root-6.32.02_install -DCMAKE_CXX_STANDARD="17" -Dgdml="ON" -Droofit="ON" -Dbuiltin_glew=ON -Droot7=OFF ../root-6.32.02
+
+make -j8
+
+ci sono stati N problemi
+
+```
+/Volumes/CaseSensitive/amssw_cold/duranti/root-6.32.02/roofit/xroofit/src/xRooFit.cxx:20:25: error: function-like macro 'ROOT_VERSION' is not defined
+#if ROOT_VERSION_CODE < ROOT_VERSION(6, 27, 00)
+                        ^
+```
+che derivano da
+```
+/Volumes/CaseSensitive/amssw_cold/duranti/root-6.32.02/roofit/xroofit/src/xRooFit.cxx:13:10: warning: non-portable path to file '"Rversion.h"'; specified path differs in case from file name on disk [-Wnonportable-include-path]
+#include "RVersion.h"
+         ^~~~~~~~~~~~
+         "Rversion.h"
+```
+che a sua volta vengono da
+```
+bozzo@host-10-25-128-252:root-6.32.02_build> locate Rversion.h
+/Volumes/amssw/duranti/root-6.32.02_install/include/ROOT/RVersion.hxx
+/Volumes/amssw/duranti/root-6.32.02_install/include/RVersion.h
+...
+/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/include/Rversion.h
+```
+cioè da un file col nome UGUALE (ma PER FORTUNA case diverso) di R. Ho disinstallato R e è passata la paura...

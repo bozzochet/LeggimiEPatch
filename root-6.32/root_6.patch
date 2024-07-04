@@ -1,0 +1,183 @@
+Binary files root_rep_6_18_04/.git/index and root_rep_6_18_04_patched/.git/index differ
+diff -ur root_rep_6_18_04/graf2d/postscript/src/TImageDump.cxx root_rep_6_18_04_patched/graf2d/postscript/src/TImageDump.cxx
+--- root_rep_6_18_04/graf2d/postscript/src/TImageDump.cxx	2019-11-20 14:00:46.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/postscript/src/TImageDump.cxx	2019-11-20 14:31:29.000000000 +0100
+@@ -321,6 +321,11 @@
+       if (ms==20) ms = 120;
+    }
+ 
++   Width_t markerlinewidth = 2;
++   if (getenv("MARKERLINEWIDTH")) {
++     markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++   }
++   
+    // Draw the marker according to the type
+    Short_t ix,iy;
+    for (Int_t i=0;i<n;i++) {
+@@ -344,26 +349,26 @@
+          break;
+       // Plus (+)
+       case 2:
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy), UInt_t(ix+m2), UInt_t(iy), col->AsHexString());
+-         fImage->DrawLine(UInt_t(ix), UInt_t(iy-m2), UInt_t(ix), UInt_t(iy+m2), col->AsHexString());
+-         break;
++        fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy), UInt_t(ix+m2), UInt_t(iy), col->AsHexString(), markerlinewidth);
++	fImage->DrawLine(UInt_t(ix), UInt_t(iy-m2), UInt_t(ix), UInt_t(iy+m2), col->AsHexString(), markerlinewidth);
++	break;
+       // X shape (X)
+       case 5:
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(ix+m2), UInt_t(iy+m2), col->AsHexString());
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy+m2), UInt_t(ix+m2), UInt_t(iy-m2), col->AsHexString());
++        fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(ix+m2), UInt_t(iy+m2), col->AsHexString(), markerlinewidth);
++	fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy+m2), UInt_t(ix+m2), UInt_t(iy-m2), col->AsHexString(), markerlinewidth);
+          break;
+       // Asterisk shape (*)
+       case 3:
+       case 31:
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy), UInt_t(ix+m2), UInt_t(iy), col->AsHexString());
+-         fImage->DrawLine(UInt_t(ix), UInt_t(iy-m2), UInt_t(ix), UInt_t(iy+m2), col->AsHexString());
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(ix+m2), UInt_t(iy+m2), col->AsHexString());
+-         fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy+m2), UInt_t(ix+m2), UInt_t(iy-m2), col->AsHexString());
+-         break;
++        fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy), UInt_t(ix+m2), UInt_t(iy), col->AsHexString(), markerlinewidth);
++	fImage->DrawLine(UInt_t(ix), UInt_t(iy-m2), UInt_t(ix), UInt_t(iy+m2), col->AsHexString(), markerlinewidth);
++	fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(ix+m2), UInt_t(iy+m2), col->AsHexString(), markerlinewidth);
++	fImage->DrawLine(UInt_t(ix-m2), UInt_t(iy+m2), UInt_t(ix+m2), UInt_t(iy-m2), col->AsHexString(), markerlinewidth);
++        break;
+       // Circle
+       case 4:
+       case 24:
+-         fImage->DrawCircle(ix, iy, Int_t(msize/2), col->AsHexString(), 1);
++      fImage->DrawCircle(ix, iy, Int_t(msize/2), col->AsHexString(), markerlinewidth);
+          break;
+       // Circle
+       case 8:
+@@ -380,7 +385,7 @@
+          fImage->FillRectangle(col->AsHexString(), UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(m), UInt_t(m));
+          break;
+       case 25:
+-         fImage->DrawRectangle(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(m), UInt_t(m), col->AsHexString());
++	fImage->DrawRectangle(UInt_t(ix-m2), UInt_t(iy-m2), UInt_t(m), UInt_t(m), col->AsHexString(), markerlinewidth);
+          break;
+       // Down triangle
+       case 23:
+diff -ur root_rep_6_18_04/graf2d/postscript/src/TPDF.cxx root_rep_6_18_04_patched/graf2d/postscript/src/TPDF.cxx
+--- root_rep_6_18_04/graf2d/postscript/src/TPDF.cxx	2019-11-20 14:00:46.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/postscript/src/TPDF.cxx	2019-11-20 14:36:02.000000000 +0100
+@@ -583,7 +583,13 @@
+    Style_t linestylesav = fLineStyle;
+    Width_t linewidthsav = fLineWidth;
+    SetLineStyle(1);
+-   SetLineWidth(1);
++
++   Width_t markerlinewidth = 2;
++   if (getenv("MARKERLINEWIDTH")) {
++     markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++   }
++   SetLineWidth(markerlinewidth);
++
+    SetColor(Int_t(fMarkerColor));
+    Int_t ms = abs(fMarkerStyle);
+ 
+@@ -894,7 +900,14 @@
+    Style_t linestylesav = fLineStyle;
+    Width_t linewidthsav = fLineWidth;
+    SetLineStyle(1);
+-   SetLineWidth(1);
++
++   Width_t markerlinewidth = 2;
++   if (getenv("MARKERLINEWIDTH")) {
++     markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++   }
++   SetLineWidth(markerlinewidth);
++  
++  
+    SetColor(Int_t(fMarkerColor));
+    Int_t ms = abs(fMarkerStyle);
+ 
+diff -ur root_rep_6_18_04/graf2d/postscript/src/TPostScript.cxx root_rep_6_18_04_patched/graf2d/postscript/src/TPostScript.cxx
+--- root_rep_6_18_04/graf2d/postscript/src/TPostScript.cxx	2019-11-20 14:00:46.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/postscript/src/TPostScript.cxx	2019-11-20 14:38:42.000000000 +0100
+@@ -1100,7 +1100,11 @@
+    Style_t linestylesav = fLineStyle;
+    Width_t linewidthsav = fLineWidth;
+    SetLineStyle(1);
+-   SetLineWidth(1);
++   Width_t markerlinewidth = 2;
++   if (getenv("MARKERLINEWIDTH")) {
++     markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++   }
++   SetLineWidth(markerlinewidth);
+    SetColor(Int_t(fMarkerColor));
+    markerstyle = abs(fMarkerStyle);
+    if (markerstyle <= 0) strlcpy(chtemp, " m20",10);
+diff -ur root_rep_6_18_04/graf2d/postscript/src/TSVG.cxx root_rep_6_18_04_patched/graf2d/postscript/src/TSVG.cxx
+--- root_rep_6_18_04/graf2d/postscript/src/TSVG.cxx	2019-11-20 14:00:46.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/postscript/src/TSVG.cxx	2019-11-20 14:41:54.000000000 +0100
+@@ -591,6 +591,11 @@
+    Double_t m4 = m/4.;
+    Double_t m0 = m/10.;
+ 
++   Width_t markerlinewidth = 2;
++   if (getenv("MARKERLINEWIDTH")) {
++     markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++   }
++   
+    // Draw the marker according to the type
+    PrintStr("@");
+    if ((ms > 19 && ms < 24) || ms == 29 || ms == 33 || ms == 34 ||//) {
+@@ -599,7 +604,7 @@
+       PrintStr("<g stroke=");
+       SetColor(Int_t(fMarkerColor));
+       PrintStr(" stroke-width=\"");
+-      WriteReal(fLineWidth, kFALSE);
++      WriteInteger(markerlinewidth,0);
+       PrintStr("\" fill=");
+       SetColor(Int_t(fMarkerColor));
+       PrintStr(">");
+@@ -607,7 +612,7 @@
+       PrintStr("<g stroke=");
+       SetColor(Int_t(fMarkerColor));
+       PrintStr(" stroke-width=\"");
+-      WriteReal(fLineWidth, kFALSE);
++      WriteInteger(markerlinewidth,0);
+       PrintStr("\" fill=\"none\"");
+       PrintStr(">");
+    }
+diff -ur root_rep_6_18_04/graf2d/quartz/src/QuartzMarker.mm root_rep_6_18_04_patched/graf2d/quartz/src/QuartzMarker.mm
+--- root_rep_6_18_04/graf2d/quartz/src/QuartzMarker.mm	2019-11-20 13:57:56.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/quartz/src/QuartzMarker.mm	2019-11-20 14:45:41.000000000 +0100
+@@ -907,6 +907,7 @@
+ void DrawPolyMarker(CGContextRef ctx, unsigned nPoints, const TPoint *xy,
+                     Size_t markerSize, Style_t markerStyle)
+ {
++   CGContextSetLineWidth(ctx, 3); 
+    switch (markerStyle) {
+    case kDot:
+       DrawMarkerDot(ctx, nPoints, xy);
+@@ -1024,6 +1025,7 @@
+ void DrawPolyMarker(CGContextRef ctx, const std::vector<TPoint> &xy,
+                     Size_t markerSize, Style_t markerStyle)
+ {
++   CGContextSetLineWidth(ctx, 3);
+    DrawPolyMarker(ctx, xy.size(), &xy[0], markerSize, markerStyle);
+ }
+ 
+diff -ur root_rep_6_18_04/graf2d/x11/src/TGX11.cxx root_rep_6_18_04_patched/graf2d/x11/src/TGX11.cxx
+--- root_rep_6_18_04/graf2d/x11/src/TGX11.cxx	2019-11-20 13:57:57.000000000 +0100
++++ root_rep_6_18_04_patched/graf2d/x11/src/TGX11.cxx	2019-11-20 14:46:35.000000000 +0100
+@@ -670,7 +670,13 @@
+ 
+ void TGX11::DrawPolyMarker(int n, TPoint *xyt)
+ {
+-   XPoint *xy = (XPoint*)xyt;
++  Width_t markerlinewidth = 2;
++  if (getenv("MARKERLINEWIDTH")) {
++    markerlinewidth=atof(getenv("MARKERLINEWIDTH"));
++  }
++  XSetLineAttributes(fDisplay, *gGCmark, markerlinewidth, LineSolid, gCapStyle, gJoinStyle);
++
++  XPoint *xy = (XPoint*)xyt;
+ 
+    if (gMarker.n <= 0) {
+       const int kNMAX = 1000000;
