@@ -60,3 +60,14 @@ bozzo@host-10-25-128-252:root-6.32.02_build> locate Rversion.h
 /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/include/Rversion.h
 ```
 cioè da un file col nome UGUALE (ma PER FORTUNA case diverso) di R. Ho disinstallato R e è passata la paura...
+
+Update di Settembre 2024: dopo il passaggio a Sonoma 14.6.1 e/o a XCode 16, manco quello compilato funziona più...
+E manco la versione piu' nuova (6.32.06) compila.
+Ma
+- revertando a 15.1
+- e come al solito togliendo ROOTSYS, ROOT_INCLUDE_PATH e root dal PATH, dall'LD_LIBRARY_PATH e dal DYLD_LIBRARY_PATH
+sono riuscito a compilarli. 
+
+Successivamente ho rimesso XCode e CommandTools alla 16.0 e ho ricompilato, sempre stando attendo a
+- togliere ROOTSYS, ROOT_INCLUDE_PATH e root dal PATH, dall'LD_LIBRARY_PATH e dal DYLD_LIBRARY_PATH
+e la 6.32.06 allora ha compilato.
