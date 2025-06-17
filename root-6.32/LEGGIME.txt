@@ -71,3 +71,6 @@ sono riuscito a compilarli.
 Successivamente ho rimesso XCode e CommandTools alla 16.0 e ho ricompilato, sempre stando attendo a
 - togliere ROOTSYS, ROOT_INCLUDE_PATH e root dal PATH, dall'LD_LIBRARY_PATH e dal DYLD_LIBRARY_PATH
 e la 6.32.06 allora ha compilato.
+
+18/Feb/2025)
+- per la 32.10 ho aggiunto `-Dbuiltin_vdt=ON`
